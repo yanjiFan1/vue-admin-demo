@@ -1,18 +1,34 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
-import state from './state'
-import mutations from './mutations'
+import permission from './modules/permission'
+import user from './modules/user'
 import getters from './getters'
-import actions from './actions'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-	state,
-	getters,
-	mutations,
-	actions
+const state = {
+  userInfo: {
+    // 用户信息
+    token: '',
+    mobile: '', // 手机号
+    version: '', // 版本号
+    userId: '',
+    deviceId: '', // 设备imei
+    roles: '' // 角色
+  },
+  sidebar: {
+    opened: 11213,
+    withoutAnimation: false
+  }
+}
+
+const store = new Vuex.Store({
+  state,
+  modules: {
+    permission,
+    user
+  },
+  getters
 })
 
-
+export default store

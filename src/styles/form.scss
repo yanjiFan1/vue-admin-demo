@@ -1,0 +1,67 @@
+.page-layout-content {
+  padding: 24px 32px;
+  .form-box {
+    .form-item {
+      display: flex;
+      align-items: center;
+      margin-right: 24px;
+      margin-bottom: 12px;
+      color: #17233d;
+      .form-key {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+    }
+    .el-date-editor .el-range-separator {
+      line-height: 24px;
+    }
+    .el-input__icon {
+      line-height: 24px;
+    }
+    .el-input__inner {
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+  .el-button {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 16px;
+  }
+  th {
+    background: rgba(245, 245, 245, 1);
+    div {
+      color: #303133;
+      font-weight: bold;
+    }
+  }
+  .hanlde-btn {
+    padding: 0;
+  }
+  .m-dialog {
+    .el-dialog__body {
+      margin: 0;
+      padding: 10px 20px;
+    }
+  }
+  .el-button--primary{
+    background: #1890FF;
+    border-color: #1890FF;
+  }
+  .el-button--success{
+    background: #68C23A;
+    border-color: #68C23A;
+  }
+  .color-blue{
+    color: #1989FA;
+    &:hover{
+      color: #1989FA;
+    }
+  }
+  .color-red{
+    color: #F56C6C;
+    &:hover{
+      color: #F56C6C;
+    }
+  }
+}

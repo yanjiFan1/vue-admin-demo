@@ -1,23 +1,28 @@
-
 import Vue from 'vue'
+import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'element-ui/lib/theme-default/index.css'
-import elementUI from 'element-ui'
+import './icons' // icon
+import './permission' // permission control
+
+import * as filters from './filters' // global filters
+
+Vue.use(Element)
+
+// register global utility filters.
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 Vue.config.productionTip = false
 
-Vue.use(elementUI)
-
 new Vue({
-  el: '#tp_container',
-  store,
+  el: '#app',
   router,
-  template: '<App/>',
-  components: { 
-  	App
-  }
+  store,
+  render: h => h(App)
 })
-

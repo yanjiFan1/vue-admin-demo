@@ -1,0 +1,36 @@
+//sidebar
+// $menuBg:#409EFF;
+$menuBg: #011528; 
+// $menuBg:#304156;
+$subMenuBg:#fff;
+$menuHover:#0C77D1;
+$dangerColor:#F56C6C;
+$mainColor:#409EFF;
+// $menuText:#fff;
+$menuActiveText:#409EFF;
+$menuText:#bfcbd9;
+// $menuActiveText:#409EFF;
+// $menuActiveText:#fff;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#fff;
+
+$sideBarWidth: 200px;
+// $subMenuActiveText:#fff;
+$subMenuActiveText:#f4f4f5;
+// $subMenuBg:#1966ad;
+$subMenuBg:#000C16;
+$subMenuHover:rgb(74, 84, 105);
+
+$mainPaddingLeft: 15px;
+:export {
+    menuBg: $menuBg;
+    menuText: $menuText;
+    menuActiveText:$menuActiveText;
+    subMenuActiveText: $subMenuActiveText;
+    sideBarWidth: $sideBarWidth;
+    subMenuActiveText: $subMenuActiveText;
+    subMenuBg: $subMenuBg;
+    subMenuHover: $subMenuHover;
+    mainPaddingLeft: $mainPaddingLeft;
+
+  }
