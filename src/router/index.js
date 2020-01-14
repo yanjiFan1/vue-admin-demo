@@ -41,7 +41,7 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
       name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      meta: { title: '首页', icon: 'dashboard', noCache: true }
     }]
   }
 ]
@@ -59,16 +59,15 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'errorPages',
     meta: {
-      title: 'errorPages',
+      title: '错误页',
       icon: '404'
     },
     children: [
-      { path: '401', component: () => import('@/views/errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
-      { path: '404', component: () => import('@/views/errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
+      { path: '401', component: () => import('@/views/errorPage/401'), name: 'page401', meta: { title: '401', noCache: true }},
+      { path: '404', component: () => import('@/views/errorPage/404'), name: 'page404', meta: { title: '404', noCache: true }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
-
 // 不展示在tab栏里
 export const noShowRouter = []

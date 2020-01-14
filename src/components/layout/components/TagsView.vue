@@ -3,21 +3,20 @@
     <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
       <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
         :to="tag" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
-        111222222
+        {{tag.title}}
         <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
       </router-link>
     </scroll-pane>
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-      <li @click="closeSelectedTag(selectedTag)">'tagsView.close'</li>
-      <li @click="closeOthersTags">tagsView.closeOthers</li>
-      <li @click="closeAllTags">tagsView.closeAll</li>
+      <li @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li @click="closeOthersTags">关闭其它</li>
+      <li @click="closeAllTags">关闭所有</li>
     </ul>
   </div>
 </template>
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
-// import { generateTitle } from '@/utils/i18n'
 
 export default {
   components: { ScrollPane },
@@ -27,12 +26,11 @@ export default {
       top: 0,
       left: 0,
       selectedTag: {}
-
     }
   },
   computed: {
     visitedViews() {
-      return []
+      return this.$store.state.tagsView.visitedViews
     }
   },
   watch: {
@@ -52,7 +50,6 @@ export default {
     this.addViewTags()
   },
   methods: {
-    // generateTitle, // generateTitle by vue-i18n
     generateRoute() {
       if (this.$route.name) {
         return this.$route
@@ -67,7 +64,7 @@ export default {
       if (!route) {
         return false
       }
-      // this.$store.dispatch('addVisitedViews', route)
+      this.$store.dispatch('addVisitedViews', route)
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag

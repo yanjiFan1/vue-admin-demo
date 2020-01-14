@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from './modules/app'
 import permission from './modules/permission'
 import user from './modules/user'
+import tagsView from './modules/tagsView'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -15,18 +17,16 @@ const state = {
     userId: '',
     deviceId: '', // 设备imei
     roles: '' // 角色
-  },
-  sidebar: {
-    opened: 11213,
-    withoutAnimation: false
   }
 }
 
 const store = new Vuex.Store({
   state,
   modules: {
+    app,
     permission,
-    user
+    user,
+    tagsView
   },
   getters
 })

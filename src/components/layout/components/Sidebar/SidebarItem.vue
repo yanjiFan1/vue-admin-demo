@@ -3,13 +3,13 @@
       {{item}}
       <router-link v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <span v-if="onlyOneChild.meta&&onlyOneChild.meta.title" slot="title">onlyOneChild.meta.title</span>
+          <span v-if="onlyOneChild.meta&&onlyOneChild.meta.title" slot="title">{{onlyOneChild.meta.title}}</span>
         </el-menu-item>
       </router-link>
 
       <el-submenu v-else :index="item.name||item.path">
         <template slot="title">
-          <span v-if="item.meta&&item.meta.title" slot="title">item.meta.title</span>
+          <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
         </template>
 
         <template v-for="child in item.children" v-if="!child.hidden">
@@ -17,7 +17,7 @@
 
           <router-link v-else :to="resolvePath(child.path)" :key="child.name">
             <el-menu-item :index="resolvePath(child.path)">
-              <span v-if="child.meta&&child.meta.title" slot="title">child.meta.title</span>
+              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
             </el-menu-item>
           </router-link>
         </template>
