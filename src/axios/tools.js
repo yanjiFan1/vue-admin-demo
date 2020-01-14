@@ -10,9 +10,8 @@ import { Message } from 'element-ui'
  * @param msg       接口异常提示
  * @param headers   接口所需header配置
  */
-// 设置超时时间 10s
-
-// axios.defaults.timeout = 10000;
+// 设置超时时间 15s
+axios.defaults.timeout = 10000000
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
   // 在发送请求之前做某事，比如说 设置loading动画显示

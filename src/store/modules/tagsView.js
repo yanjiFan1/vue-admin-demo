@@ -50,12 +50,10 @@ const tagsView = {
     }
   },
   actions: {
-
-  	// 添加当前标签
+    // 添加当前标签
     addVisitedViews({ commit }, view) {
       commit('ADD_VISITED_VIEWS', view)
     },
-
     // 删除当前标签
     delVisitedViews({ commit, state }, view) {
       return new Promise((resolve) => {
@@ -63,7 +61,6 @@ const tagsView = {
         resolve([...state.visitedViews])
       })
     },
-
     // 删除其他标签
     delOthersViews({ commit, state }, view) {
       return new Promise((resolve) => {
@@ -71,7 +68,6 @@ const tagsView = {
         resolve([...state.visitedViews])
       })
     },
-
     // 删除所有的标签
     delAllViews({ commit, state }) {
       return new Promise((resolve) => {
@@ -79,7 +75,6 @@ const tagsView = {
         resolve([...state.visitedViews])
       })
     }
-
   }
 }
 

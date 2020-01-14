@@ -78,15 +78,15 @@ export function getQueryObject(url) {
  * @param {Sting} val input value
  * @returns {number} output value
  */
-export function getByteLen(val) {
-  let len = 0
-  for (let i = 0; i < val.length; i++) {
-    if (val[i].match(/[^\x00-\xff]/ig) != null) {
-      len += 1
-    } else { len += 0.5 }
-  }
-  return Math.floor(len)
-}
+// export function getByteLen(val) {
+//   let len = 0
+//   for (let i = 0; i < val.length; i++) {
+//     if (val[i].match(/[^\x00-\xff]/ig) != null) {
+//       len += 1
+//     } else { len += 0.5 }
+//   }
+//   return Math.floor(len)
+// }
 
 export function cleanArray(actual) {
   const newArray = []
@@ -102,8 +102,7 @@ export function param(json) {
   if (!json) return ''
   return cleanArray(Object.keys(json).map(key => {
     if (json[key] === undefined) return ''
-    return encodeURIComponent(key) + '=' +
-            encodeURIComponent(json[key])
+    return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
   })).join('&')
 }
 
@@ -123,8 +122,7 @@ export function html2Text(val) {
 
 export function objectMerge(target, source) {
   /* Merges two  objects,
-     giving the last one precedence */
-
+                 giving the last one precedence */
   if (typeof target !== 'object') {
     target = {}
   }
@@ -156,11 +154,9 @@ export function scrollTo(element, to, duration) {
 
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
-
   const later = function() {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
-
     // 上次被包装函数被调用时间间隔last小于设定时间间隔wait
     if (last < wait && last > 0) {
       timeout = setTimeout(later, wait - last)
@@ -184,7 +180,6 @@ export function debounce(func, wait, immediate) {
       result = func.apply(context, args)
       context = args = null
     }
-
     return result
   }
 }

@@ -6,6 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getUserMenu } from '@/axios/index'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
 
@@ -26,6 +27,19 @@ export default {
     // if (!this.roles.includes('admin')) {
     //   this.currentRole = 'editorDashboard'
     // }
+    this.getInfo()
+  },
+
+  methods: {
+    getInfo() {
+      getUserMenu({
+        page: 1,
+        size: 10
+      }).then(res => {
+        console.log(res)
+        console.time()
+      })
+    }
   }
 }
 </script>
