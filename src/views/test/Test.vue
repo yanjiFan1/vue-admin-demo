@@ -20,11 +20,11 @@ export default {
         page: 1,
         sizeChange: size => {
           this.pageObj.pageSize = size
-          // this.getWaitDistributeList()
+          this.testList()
         },
         pageChange: page => {
           this.pageObj.page = page
-          // this.getWaitDistributeList()
+          this.testList()
         }
       }
     }
@@ -36,6 +36,7 @@ export default {
     testList() {
       testList().then(res => {
         this.tableData = res.result && res.result.list
+        this.pageObj.total = res.result && res.result.list.length
       })
     }
   }
