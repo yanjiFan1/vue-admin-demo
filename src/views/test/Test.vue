@@ -1,6 +1,6 @@
 <template>
-	<div class="login-container">
-		<XTable :tableData="tableData" :columns="columns" :pageObj="pageObj"></XTable>
+	<div class="login-container page-layout-content bg-fff">
+		<XTable :selection="true" :defaultIndex="true" rowKey="orderCode" :tableData="tableData" :columns="columns" :pageObj="pageObj"></XTable>
 	</div>
 </template>
 
