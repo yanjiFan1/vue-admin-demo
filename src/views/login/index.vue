@@ -43,6 +43,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { downLoadImg } from 'yjfl'
 // import LangSelect from '@/components/LangSelect'
 
 export default {
@@ -78,29 +79,32 @@ export default {
   },
   methods: {
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
+      downLoadImg('fadsas', 'https://img0.baidu.com/it/u=1909914956,622625056&fm=26&fmt=auto&gp=0.jpg')
+
+      // if (this.passwordType === 'password') {
+      //   this.passwordType = ''
+      // } else {
+      //   this.passwordType = 'password'
+      // }
     },
     handleLogin() {
       console.log(1000)
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.$router.push({ path: '/' })
-          /* 调用store的接口Login */
-          // this.$store
-          //   .dispatch('Login', this.loginForm)
-          //   .then(() => {
-          //     this.$router.push({ path: '/' })
-          //     location.reload()
-          //   })
-        } else {
-          console.log('erro submit!!')
-          return false
-        }
-      })
+      this.$router.push({ path: '/' })
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     this.$router.push({ path: '/' })
+      //     /* 调用store的接口Login */
+      //     // this.$store
+      //     //   .dispatch('Login', this.loginForm)
+      //     //   .then(() => {
+      //     //     this.$router.push({ path: '/' })
+      //     //     location.reload()
+      //     //   })
+      //   } else {
+      //     console.log('erro submit!!')
+      //     return false
+      //   }
+      // })
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)
