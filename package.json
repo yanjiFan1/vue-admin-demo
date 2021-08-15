@@ -37,7 +37,7 @@
     "url": "https://github.com/yanjiFan1/vue-element-admin/issues"
   },
   "dependencies": {
-    "axios": "0.17.1",
+    "axios": "0.21.1",
     "clipboard": "1.7.1",
     "codemirror": "5.32.0",
     "connect": "3.6.6",
