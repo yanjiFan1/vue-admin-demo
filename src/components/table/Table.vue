@@ -39,7 +39,17 @@
         <!-- 操作列/自定义列 -->
         <slot v-if="col.slot" :name="col.slot" />
         <!-- 普通列 -->
-        <el-table-column v-else :key="index" :prop="col.prop" :label="col.label" :width="col.width" :formatter="col.formatter" align="center" :type="col.type" :show-overflow-tooltip="col.showOverflow"/>
+        <el-table-column 
+          v-else 
+          :key="index" 
+          :prop="col.prop" 
+          :label="col.label" 
+          :width="col.width" 
+          :formatter="col.formatter" 
+          align="center" 
+          :type="col.type" 
+          :show-overflow-tooltip="col.showOverflow"
+        />
       </template>
     </el-table>
 

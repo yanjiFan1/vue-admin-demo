@@ -1,15 +1,23 @@
 <template>
 	<div class="login-container page-layout-content bg-fff">
-		<XTable :selection="true" :defaultIndex="true" rowKey="orderCode" :tableData="tableData" :columns="columns" :pageObj="pageObj"></XTable>
+		<Table 
+      :selection="true" 
+      :defaultIndex="true" 
+      rowKey="orderCode" 
+      :tableData="tableData" 
+      :columns="columns" 
+      :pageObj="pageObj"
+    >
+    </Table>
 	</div>
 </template>
 
 <script>
-import XTable from '@/components/table/Table'
+import Table from '@/components/table/Table'
 import { testList } from '@/axios/index'
 import { columns } from './columns'
 export default {
-  components: { XTable },
+  components: { Table },
   name: 'Test',
   data() {
     return {
