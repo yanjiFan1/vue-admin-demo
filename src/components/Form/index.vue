@@ -15,11 +15,13 @@
                 :label="item.label"
                 :rules="item.rules"
                 :class="{ 'is-inline': item.isInline }"
+                :style="{ 'width': item.width || '100%' }"
             >
                 <el-input
                     v-if="item.type === 'input'"
                     v-model="form[item.code]"
                     :disabled="item.disabled"
+                    :maxlength="item.maxLength"
                     :placeholder="item.placeholder"
                 />
                 <el-input
@@ -37,6 +39,10 @@
                     v-model="form[item.code]"
                     :disabled="item.disabled"
                     :placeholder="item.placeholder"
+                    :filterable="item.filterable"
+                    :multiple="item.multiple"
+                    :clearable="item.clearable"
+                    @change="(val) => handleSelect(val, item)"
                 >
                     <el-option
                         v-for="(it, idx) in item.options"
@@ -62,11 +68,15 @@
                 </el-radio-group>
                 <el-cascader
                     v-if="item.type === 'cascader'"
+                    :ref="item.ref"
                     v-model="form[item.code]"
+                    :style="item.style || 'width: 100%'"
                     :clearable="item.clearable"
                     :disabled="item.disabled"
                     :placeholder="item.placeholder"
                     :options="item.options"
+                    :props="item.props || { 'children': 'children', 'label': 'label', 'value': 'value'}"
+                    @change="handleCascader(item)"
                 />
                 <el-date-picker
                     v-if="item.type === 'datePicker'"
@@ -81,16 +91,6 @@
                     :end-placeholder="item.endPlaceholder || '结束时间'"
                     @change="(val) => datePickerChange(val, item)"
                 />
-            </el-form-item>
-            <el-form-item style="float: right">
-                <el-button @click="onReset">重置</el-button>
-                <el-button
-                    type="primary"
-                    @click="onSearch"
-                    @keydown.enter.native="onSearch"
-                >
-                    搜索
-                </el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -139,6 +139,7 @@ export default {
     },
     form: {
       handler(val) {
+        this.init()
         this.form = val
       },
       immediate: true
@@ -150,18 +151,13 @@ export default {
       immediate: true
     },
     formList: {
-      handler(val) {
-        this.formList = val
-        setTimeout(() => {
-          this.init()
-        }, 100)
+      handler(val, old) {
+        if (JSON.stringify(val) !== JSON.stringify(old)) {
+          this.formList = val
+        }
       },
       immediate: true
     }
-  },
-
-  created() {
-    this.init()
   },
 
   methods: {
@@ -170,8 +166,20 @@ export default {
       this.formList.forEach(it => {
         if (it.optionsRequest) {
           this.getApi(this.$api, it.optionsRequest.api)(it.optionsRequest.params, (res) => {
-            this.$set(it, 'options', res || [])
+            this.$set(it, 'options', this.updateSelectOptions(res || [], it.optionsField, it.optionsRequest.isNotNeedResetOptions))
           })
+        }
+      })
+    },
+
+    updateSelectOptions(options, optionsField, isNotNeedResetOptions) {
+      if (isNotNeedResetOptions) { // 不需要重置options
+        return options
+      }
+      return options.map(it => {
+        return {
+          label: it[optionsField && optionsField.label || 'label'],
+          value: it[optionsField && optionsField.value || 'value']
         }
       })
     },
@@ -198,6 +206,43 @@ export default {
         this.parentForm[item.codeNav] = val && val[1]
       } else {
         this.parentForm[item.code] = val
+      }
+    },
+
+    // 处理select值变化
+    handleSelect(it, item) {
+      const { code, codeNav, movement, options } = item || {}
+      const currentArr = (options || []).filter(el => { return el.value === it })
+      const { value, label } = currentArr && currentArr[0] || {}
+      const currentVal = codeNav ? value : it
+      if (codeNav) {
+        this.parentForm[code] = value
+        this.parentForm[codeNav] = label
+      }
+      // 如果有关联-进行关联操作
+      if (movement) {
+        const { current, fields } = movement || {}
+        this.$emit('movement', item, fields, currentVal === current)
+      }
+    },
+
+    // 处理级联的变化
+    handleCascader(item) {
+      const { codeNav, singleMark, multipleMark } = item || {}
+      if (codeNav) {
+        let codeNavLabel = ''
+        this.$nextTick(() => {
+          // 获取级联的lable start
+          const cascader = this.$refs[item.ref] && this.$refs[item.ref][0]
+          const getCheckNodes = cascader && cascader.getCheckNodes && cascader.getCheckNodes();
+          (getCheckNodes || []).forEach(it => {
+            const { pathLables } = it || {}
+            const firstVal = codeNavLabel === '' ? codeNavLabel : codeNavLabel + (multipleMark || ';')
+            codeNavLabel = firstVal + (Array.isArray(pathLables) && pathLables.join(singleMark || '/'))
+          })
+          // 获取级联的label end
+          this.parentForm[codeNav] = codeNavLabel
+        })
       }
     },
 
