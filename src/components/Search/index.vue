@@ -1,17 +1,21 @@
 <template>
-    <div class="m-search">
+    <div :class="`m-search ${pageClass}`">
         <el-form
             ref="form"
             class="m-search-form"
             :inline="true"
             :model="form"
             :size="size"
-            :label-width="lableWidth"    
+            :label-width="lableWidth"
+            @submit.native.prevent 
         >
             <div style="flex: 1">
+              <div class="m-search-form-box">
                 <el-form-item
                     v-for="(item, index) in formList"
                     :key="index"
+                    :style="{ minWidth: minItemWidth }"
+                    class="m-search-form-box-item"
                     :prop="item.code"
                     :label="item.label"
                     :rules="item.rules"
@@ -20,8 +24,10 @@
                     <el-input
                         v-if="item.type === 'input'"
                         v-model="form[item.code]"
+                        :style="{ width: item.width }"
                         :disabled="item.disabled"
                         :placeholder="item.placeholder"
+                        @input="(val) => getInputValueChange(item.code, val)"
                     />
                     <el-input
                         v-if="item.type === 'textarea'"
@@ -38,6 +44,7 @@
                         v-model="form[item.code]"
                         :disabled="item.disabled"
                         :placeholder="item.placeholder"
+                        @change="(val) => getInputValueChange(item.code, val)"
                     >
                         <el-option
                             v-for="(it, idx) in item.options"
@@ -83,8 +90,16 @@
                         @change="(val) => datePickerChange(val, item)"
                     />
                 </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button @click="onReset">重置</el-button>
+                <el-form-item
+                  v-if="btnMode === 'right'"
+                  style="margin-left: auto"
+                >
+                    <el-button
+                      v-if="isShowReset"
+                      @click="onReset"
+                    >
+                      重置
+                    </el-button>
                     <el-button
                         type="primary"
                         @click="onSearch"
@@ -93,6 +108,25 @@
                         搜索
                     </el-button>
                 </el-form-item>
+              </div>
+              <el-form-item
+                  v-if="btnMode === 'footer'"
+                  style="float: right"
+                >
+                    <el-button
+                      v-if="isShowReset"
+                      @click="onReset"
+                    >
+                      重置
+                    </el-button>
+                    <el-button
+                        type="primary"
+                        @click="onSearch"
+                        @keydown.enter.native="onSearch"
+                    >
+                        搜索
+                    </el-button>
+                </el-form-item> 
             </div>
         </el-form>
     </div>
@@ -109,10 +143,25 @@ export default {
       type: String,
       default: ''
     },
-    // label的宽度
-    lableWitdh: {
+    pageClass: {
+      type: String,
+      default: ''
+    },
+    btnMode: {
+      type: String,
+      default: 'footer'
+    },
+    labelWidth: {
       type: String,
       default: '100px'
+    },
+    isShowReset: {
+      type: Boolean,
+      default: true
+    },
+    minItemWidth: {
+      type: String,
+      default: '30%'
     }
   },
   data() {
@@ -141,6 +190,12 @@ export default {
       }
     },
 
+    // 获取input值变化
+    getInputValueChange(code, val) {
+      this.form = Object.assign(this.form, { [code]: val })
+      this.$emit('input-change', this.getParentForm())
+    },
+
     getParentForm() {
       return { ...this.form, ...this.parentForm }
     },
@@ -162,6 +217,15 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        &-box {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-wrap: wrap;
+          &-item {
+            min-width: 30%;
+          }
+        }
     }
     .ipt-elem {
         width: 240px;
