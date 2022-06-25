@@ -1,6 +1,6 @@
 <!--
  * @Description: elementui table组件二次封装
- * @Author: linZengFa
+ * @Author: dz
  * @parmas:
         tableData 表格list
         columns 列参数
@@ -15,10 +15,27 @@
  * @LastEditors:
  -->
 <template>
-  <div class="data-table">
+  <div class="m-data-table">
     <!--<el-table :data="tableData" style="width: 100%" border @selection-change="handleSelectionChange" :height="height" default-expand-all :row-key="rowkey" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">-->
-    <el-table :data="tableDataTemp" style="width: 100%" border @selection-change="handleSelectionChange" :height="height" :row-key="rowKey" :tree-props="treeProps" :key="tableKey">
-      <el-table-column v-if="selection" type="selection" width="55" fixed="left" :selectable="selectable"></el-table-column>
+    <el-table
+      :ref="tableName"
+      :key="tableKey"
+      v-loading="loading"
+      :data="tableDataTemp" 
+      style="width: 100%" 
+      border 
+      :height="height" 
+      :row-key="rowKey" 
+      :tree-props="treeProps"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column 
+        v-if="selection" 
+        type="selection" 
+        width="55" 
+        fixed="left" 
+        :selectable="selectable"
+      />
       <el-table-column
         v-if="defaultIndex"
         fixed
@@ -65,6 +82,10 @@
   export default {
     name: 'dataTable',
     props: {
+      tableName: {
+        type: String,
+        default: 'table'
+      },
       tableData: {
         type: Array,
         default: () => []
@@ -97,8 +118,13 @@
           }
         }
       },
+      border: {
+        type: Boolean,
+        default: false
+      },
       height: {
-        type: String
+        type: [String, Number],
+        default: null
       },
       visiblePagination: {
         type: Boolean,
@@ -123,6 +149,18 @@
       treeIndex: {
         type: Boolean,
         default: false
+      },
+      loading: {
+        type: Boolean,
+        default: false
+      },
+      tableCheckedIds: {
+        type: Array,
+        default: () => []
+      },
+      tableCheckKey: {
+        type: String,
+        default: 'id'
       }
     },
     components: {
@@ -146,21 +184,54 @@
           })
         }
         this.tableDataTemp = Object.assign([], data)
+      },
+      tableCheckedIds: {
+        handle() {
+          this.setRowSelection()
+        },
+        immediate: true,
+        deep: true
       }
     },
     methods: {
       indexMethod(index) {
         var size = this.pageObj.pageSize || PAGE_SIZE
         return (index + 1) + (this.pageObj.page - 1) * size
+      },
+
+      handleSelectionChange(item) {
+        this.$nextTick(() => {
+          this.$emit('handleSelectionChange', item)
+        })
+      },
+
+      // 多选框选中值
+      setRowSelection() {
+        if (Array.isArray(this.tableCheckedIds)) {
+          this.$nextTick(() => {
+            for (const key in this.tableData) {
+              if (this.tableCheckedIds.includes(this.tableData[key][this.tableCheckKey])) {
+                this.$refs[this.tableName].toggleRowSelection(this.tableData[key], true)
+              } else {
+                this.$refs[this.tableName].toggleRowSelection(this.tableData[key], false)
+              }
+            }
+          })
+        }
       }
     }
   }
 </script>
-<style lang="scss">
-  .el-table .cell, .el-table th div {
-    text-align: center;
-  }
+<style lang="less">
   .pagination {
     margin-top: 24px;
   }
+</style>
+
+<style lang="less" scoped>
+.m-data-table {
+  /deep/ .el-table th.el-table_cell {
+    background-color: #fafafa;
+  }
+}
 </style>
